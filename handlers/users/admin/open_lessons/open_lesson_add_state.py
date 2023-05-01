@@ -29,7 +29,13 @@ async def save_open_lesson_name(message: Message, state: FSMContext):
 async def save_open_lesson_datetime(message: Message, state: FSMContext):
     async with state.proxy() as data:
         data['datetime'] = message.text
-        db.register_open_lesson(data['name'], data['datetime'])
-        db.set_open_lesson(data['name'])
-    await state.finish()
-    await message.answer("<b>Открытый урок успешно добавлен !</b>", reply_markup=admin_menu.generate_admin_main_menu())
+        try:
+            db.register_open_lesson(data['name'], data['datetime'])
+            db.set_open_lesson(data['name'])
+            await state.finish()
+            await message.answer("<b>Открытый урок успешно добавлен !</b>",
+                                 reply_markup=admin_menu.generate_admin_main_menu())
+        except:
+            await message.answer("<b>Что то пошло не так, проверьте правильность ввода и повторите заново !</b>",
+                                 reply_markup=admin_menu.generate_admin_main_menu())
+
