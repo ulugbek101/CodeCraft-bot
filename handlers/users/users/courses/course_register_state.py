@@ -48,7 +48,10 @@ async def save_tel(message: Message, state: FSMContext):
         msg += f"Тел: <b>{data['tel']}</b>\n"
         msg += f"Username: <b>{'@' + data['username'] if data['username'] != '-' else '-'}</b>\n"
         for admin in ADMINS:
-            await bot.send_message(admin, msg)
+            try:
+                await bot.send_message(admin, msg)
+            except:
+                pass
         await state.finish()
         await message.answer(
             "<b>Ваши данные приняты, в скором времени администрация свяжется с вами для уточнения деталей 😉</b>",

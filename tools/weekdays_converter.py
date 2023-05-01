@@ -9,7 +9,7 @@ WEEKDAYS = {
 }
 
 
-def convert_weekdays(day_numbers: list | tuple, weekdays_dict=None):
+def convert_weekdays(day_numbers, weekdays_dict=None):
     if weekdays_dict is None:
         weekdays_dict = WEEKDAYS
     days = []

@@ -3,7 +3,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from tools.menu_generating import generate_inline_keyboard_menu_buttons
 
 
-def generate_courses_menu(courses: tuple | list):
+def generate_courses_menu(courses):
     markup = InlineKeyboardMarkup()
     return generate_inline_keyboard_menu_buttons(2, courses, markup, prefix=f"course-info")
 
