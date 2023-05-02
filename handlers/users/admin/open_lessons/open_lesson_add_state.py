@@ -1,3 +1,5 @@
+import re
+
 from aiogram.dispatcher.filters.builtin import Text
 from aiogram.types import Message
 from aiogram.contrib.middlewares.fsm import FSMContext
@@ -28,13 +30,15 @@ async def save_open_lesson_name(message: Message, state: FSMContext):
 @dp.message_handler(state=OpenLessonState.datetime)
 async def save_open_lesson_datetime(message: Message, state: FSMContext):
     async with state.proxy() as data:
+        pattern = re.compile('\d\d\.\d\d\s\d\d\:\d\d')
         data['datetime'] = message.text
-        try:
+        # TODO Add some check if there is any other open lesson with that name and then create
+        if pattern.search(message.text):
             db.register_open_lesson(data['name'], data['datetime'])
             db.set_open_lesson(data['name'])
             await message.answer("<b>Открытый урок успешно добавлен !</b>",
                                  reply_markup=admin_menu.generate_admin_main_menu())
-        except:
+        else:
             await message.answer("<b>Что то пошло не так, проверьте правильность ввода и повторите заново !</b>",
                                  reply_markup=admin_menu.generate_admin_main_menu())
         await state.finish()
