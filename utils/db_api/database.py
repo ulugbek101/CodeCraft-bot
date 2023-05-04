@@ -153,7 +153,13 @@ class Database:
         """
         sql, params = self.format_args(sql, **kwargs)
         return self.execute(sql, params, fetchone=True)
-
+    
+    def get_user(self, chat_id: int):
+        sql = """
+        SELECT * FROM Users WHERE chat_id = %s
+        """
+        return self.execute(sql, (chat_id,), fetchone=True)
+    
     def get_user_by_id(self, user_id: int):
         sql = """
             SELECT * FROM Users WHERE user_id = %s
